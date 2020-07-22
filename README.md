@@ -1,5 +1,8 @@
 # The Compatibility Effect between Physical Stimulus Size and Left-Right Responses
 The "Compatibility Effect between Physical Stimulus Size and Left-Right Responses" replication study experiment as final project for the study course "Experimental Psychology Lab" in SS20; built with \_magpie (“Minimal Architecture for the Generation of Portable Interactive Experiments”, Illieva, Xiang, Rautenstrauch, Franke).
+<br />
+<br />
+The experiment can be found here: https://size-space-compatibility.netlify.app
 
 ## Background
 The processing of cognitive tasks based on somatosensory inputs and motor-sensory outputs is a deeply investigated field of study in the cognitive sciences. Former research proposes “A theory of magnitude” (ATOM, Walsh, 2003, 2015). The theory assumes that the brain uses a generalized magnitude-processing system where the perception of space, time and quantity overlap and interact on an intermediate level of processing antecedent to the response-selection stage. This means that specific properties of the three branches space, time and quantity share a certain representational system. ATOM is therefore regarded as a shared-representations account.
