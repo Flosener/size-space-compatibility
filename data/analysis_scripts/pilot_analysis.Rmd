@@ -1,0 +1,205 @@
+---
+title: "Pilot Study Analysis: The Compatibility Effect between Physical Stimulus Size and Left-Right Responses"
+author: "Florian Pätzold 977687, Daniel Menzel 979379, Ramon Zacharias 977316, Shari Hiltner 979694"
+date: "24/07/2020"
+output: html_document
+---
+
+This analysis script is largely based on the internet tutorial, which you can find here: [https://www.scribbr.com/statistics/anova-in-r/].
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = F, message = F, warning = F)
+```
+
+## 0. Setting up the required packages
+
+```{r libraries, include=FALSE, message=FALSE, warning=FALSE}
+
+# package for convenience functions (e.g. ggplot2, dplyr, etc.)
+library(tidyverse)
+
+library(ggplot2)
+library(ggpubr)
+library(broom)
+library(AICcmodavg)
+
+# package for visualization
+#library(tidybayes)
+
+# package to visualize 
+library(bayesplot)
+
+# package to extract HDIs
+#library(HDInterval)
+
+# these options help Stan run faster
+#options(mc.cores = parallel::detectCores())
+
+#devtools::install_github("michael-franke/aida-package")
+#library(aida)
+
+# package for bayesian ANOVA
+#library(bayesanova)
+
+# for use with bayesanova
+#library(MCMCpack)
+
+# use the aida-theme for plotting
+#theme_set(theme_aida())
+
+# global color scheme / non-optimized
+project_colors = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000")
+
+# setting theme colors globally
+scale_colour_discrete <- function(...) {
+  scale_colour_manual(..., values = project_colors)
+}
+scale_fill_discrete <- function(...) {
+   scale_fill_manual(..., values = project_colors)
+} 
+
+# define scale function to avoid matrix object in tibble
+my_scale <- function(x) c(scale(x))
+
+```
+
+# 1. Load in the data.
+
+We here laod in the raw data by our 3 participants gathered in the pilot study of our experiment (and bind them together to one data frame).
+
+```{r}
+# Load in the data from the pilot study
+comp_pilot_1_raw <- read_csv("/Users/florian/Documents/Studium/Semester_4/Experimental Psychology Lab/Final_Project/data/pilot_1.csv")
+comp_pilot_2_raw <- read_csv("/Users/florian/Documents/Studium/Semester_4/Experimental Psychology Lab/Final_Project/data/pilot_2.csv")
+comp_pilot_3_raw <- read_csv("/Users/florian/Documents/Studium/Semester_4/Experimental Psychology Lab/Final_Project/data/pilot_3.csv")
+
+# Add participant ID
+comp_pilot_1_raw <- comp_pilot_1_raw %>% mutate(subject_id = rep(c(1), length(comp_pilot_1_raw$RT)))
+comp_pilot_2_raw <- comp_pilot_2_raw %>% mutate(subject_id = rep(c(2), length(comp_pilot_2_raw$RT)))
+comp_pilot_3_raw <- comp_pilot_3_raw %>% mutate(subject_id = rep(c(3), length(comp_pilot_3_raw$RT)))
+
+# Bind data together
+comp_pilot_raw <- rbind(comp_pilot_1_raw, comp_pilot_2_raw, comp_pilot_3_raw)
+comp_pilot_raw
+```
+
+# 2. Processing and cleaning the data
+
+Time to clean our data! Find the justification of the cleaning process in the preregistration of our study.
+
+```{r}
+# We exclude columns, that are not required for the analysis
+comp_pilot_data <- comp_pilot_raw %>%
+  dplyr::select(subject_id,
+         trial_type,
+         key_pressed,
+         Mapping,
+         correctness,
+         RT,
+         handedness, # discard data from left-handers because of H2
+         timeSpent # discard data from participants, that finished experiment faster than 5min
+         ) %>%
+  mutate(RT = RT - 2500) %>%  # We forgot to subtract pause (1500ms) and fix_duration (1000ms) hooks in the magpie implementation of the experiment.
+  rename("response" = "key_pressed") %>% 
+  rename("mapping" = "Mapping") %>%
+  rename("time_spent" = "timeSpent") %>%
+  filter(handedness == "right" & RT > 100 & RT < 1500 & time_spent > 5 & trial_type == "main" & correctness == "correct") # data exclusion (see preregistration)
+
+# Change key name to response location
+for (i in 1:length(comp_pilot_data$response)) {
+  if(comp_pilot_data$response[i] == "j") {
+    comp_pilot_data$response[i] <- "right"
+  } else {
+    comp_pilot_data$response[i] <- "left"
+  }
+}
+
+comp_pilot_data
+```
+
+# 3. Visualizing the data.
+
+To get a good idea of what our data looks like we now plot the mean reaction times for the different mapping conditions (compatible and incompatible) grouped by response locations (left and right).
+
+```{r}
+# Define a function for calculating the standard error
+se <- function(x) sd(x) / sqrt(length(x))
+
+# aggregate mean reaction times per subject and mapping condition
+comp_pilot_agg <- comp_pilot_data %>%
+  group_by(response, mapping) %>% 
+  summarise(mean_RT = mean(RT), se_RT = se(RT))
+
+# the aggregated data frame
+comp_pilot_agg
+
+comp_pilot_agg %>% ggplot(aes(x = mapping, y = mean_RT, fill = mapping)) +
+  geom_errorbar(aes(ymin = mean_RT - se_RT, ymax = mean_RT + se_RT), width = 0.2) +
+  geom_col() +
+  ylab("Reaction time (ms) \n") +
+  xlab("\n Response location") +
+  facet_grid(~response) +
+  coord_cartesian(ylim = c(450,550)) +
+  legend_none()
+```
+
+# 4. Analyzing the data.
+
+We use a two-way ANOVA with factors S-R mapping (compatible, incompatible) and response (key location: left, right) as well as the interaction between both factors to analyze our data.
+
+```{r}
+# specify ANOVA models
+one_way <- aov(RT ~ mapping, data = comp_pilot_data)
+summary(one_way)
+two_way <- aov(RT ~ mapping + response, data = comp_pilot_data)
+summary(two_way)
+interaction <- aov(RT ~ mapping * response, data = comp_pilot_data)
+summary(interaction)
+
+# AIC evaluation
+model_set <- list(one_way, two_way, interaction)
+model_names <- c("one-way", "two-way", "interaction")
+
+aictab(model_set, modnames = model_names)
+
+#Calculate mean and standard deviation for compatible and incompatible trials
+sd_RT_comp <- comp_pilot_data %>% filter(mapping == "compatible")
+mean(sd_RT_comp$RT)
+sd(sd_RT_comp$RT)
+sd_RT_incomp <- comp_pilot_data %>% filter(mapping == "incompatible")
+mean(sd_RT_incomp$RT)
+sd(sd_RT_incomp$RT)
+```
+AIC values are the lowest for the one-way ANOVA model, but as we want to investigate not only the first hypothesis but also the second hypothesis we need the interaction between factors S-R Mapping and response (which is why we nevertheless choose the interaction model).
+
+
+Let's check normality assumption (histogram plot), independence of observations and homogeneity assumption.
+
+```{r}
+# 1. normality assumption: plot histogram of log-transformed RTs
+hist(log(comp_pilot_data$RT))
+
+# 2. our experimental design ensures external as well as internal validity (see experimental design plan), by using counterbalancing across our "mapping condition" independent variable and within-randomisation for the independent "response" variable.
+
+# 3. we check for homoscedasticity
+par(mfrow=c(2,2))
+plot(interaction)
+par(mfrow=c(1,1))
+```
+
+The log-transformed RTs have the bell-shaped curve of a normal distribution, the residual means center around 0 for all plots (1 for the logarithmic scale-location plot) and they fit the Q-Q regression line neatly.
+
+Now, we perform Tukey's Honestly Significant Difference (TukeyHSD) post-hoc test to investigate the direction of our results.
+
+```{r}
+THSD <- TukeyHSD(interaction)
+THSD
+```
+
+# 5. Results
+
+The ANOVA revealed marginal significance for the main effect of the S-R mapping conditions compatible(mean = 473 ms, sd = 96) and incompatible(mean = 504 ms, sd = 127), F value = 6.4 with a p-value of approx. 0.012 and MSE = 81438. But no significant effect of the response location could be found. The Tukey post-hoc test reported a difference of approx. 30.7 ms CI[6.9,54.3] between incompatible and compatible trials. Analysis of the interaction between mapping and response location revealed a stronger interaction effect for left-hand responses although not significant (p-value = 0.504), F value = 0.447 and MSE = 5637. Compatibility of response location and stimulus size shortened reaction times by approx 38.4 ms, compared to the overall mean, for the left hand CI[-5.4, 83] and by approx. 22.7 ms for the right hand CI[-21.1,66.6]. Thus the compatibility reduced reaction times by approx. 16.1 ms more when giving the response with the right hand.
+
+
+
+
