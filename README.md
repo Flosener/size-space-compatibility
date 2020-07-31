@@ -17,24 +17,24 @@ In this study we replicate the original paper “Compatibility between Physical 
 2. The stimulus size – response location compatibility effect is more pronounced for the right-hand than for the left-hand responses; i.e. the difference in reaction times between the compatible and incompatible mapping condition is larger for right-hand responses than the difference for left-hand responses.
 
 ### References
-Besner, D., & Coltheart, M. (1979). Ideographic and alphabetic processing in skilled reading of English. Neuropsychologia, 17(5), 467–472. DOI: https://doi.org/10.1016/0028-3932(79)90053-8
+<B>Besner, D., & Coltheart, M.</B> (1979). Ideographic and alphabetic processing in skilled reading of English. Neuropsychologia, 17(5), 467–472. DOI: https://doi.org/10.1016/0028-3932(79)90053-8
 <br />
-Dehaene, S., Bossini, S., & Giraux, P. (1993). The mental representation of parity and number magnitude. Journal of Experimental Psychology: General, 122(3), 371–396. DOI: https://doi.org/10.1037/0096-3445.122.3.371
+<B>Dehaene, S., Bossini, S., & Giraux, P.</B> (1993). The mental representation of parity and number magnitude. Journal of Experimental Psychology: General, 122(3), 371–396. DOI: https://doi.org/10.1037/0096-3445.122.3.371
 <br />
-Dehaene, S., Dupoux, E., & Mehler, J. (1990). Is numerical comparison digital? Analogical and symbolic effects in two-digit number comparison. Journal of Experimental Psychology: Human Perception and	Performance, 16(3), 626–641. DOI: https://doi.org/10.1037/0096-1523.16.3.626
+<B>Dehaene, S., Dupoux, E., & Mehler, J.</B> (1990). Is numerical comparison digital? Analogical and symbolic effects in two-digit number comparison. Journal of Experimental Psychology: Human Perception and	Performance, 16(3), 626–641. DOI: https://doi.org/10.1037/0096-1523.16.3.626
 <br />
-Henik, A., & Tzelgov, J. (1982). Is three greater than five: The relation between physical and semantic size in comparison tasks. Memory & Cognition, 10(4), 389–395. DOI: https://doi.org/10.3758/BF03202431
+<B>Henik, A., & Tzelgov, J.</B> (1982). Is three greater than five: The relation between physical and semantic size in comparison tasks. Memory & Cognition, 10(4), 389–395. DOI: https://doi.org/10.3758/BF03202431
 <br />
-Ren, P., Nicholls, M. R., Ma, Y., & Chen, L. (2011). Size matters: Non-numerical magnitude affects the spatial coding of response. PloS ONE, 6(8). DOI: https://doi.org/10.1371/journal.pone.0023553
+<B>Ren, P., Nicholls, M. R., Ma, Y., & Chen, L.</B> (2011). Size matters: Non-numerical magnitude affects the spatial coding of response. PloS ONE, 6(8). DOI: https://doi.org/10.1371/journal.pone.0023553
 <br />
-Tzelgov, J., Meyer, J., & Henik, A. (1992). Automatic and intentional processing of numerical information. Journal of Experimental Psychology: Learning, Memory, and Cognition, 18(1), 166–179. DOI: https://doi. org/10.1037/0278-7393.18.1.166
+<B>Tzelgov, J., Meyer, J., & Henik, A.</B> (1992). Automatic and intentional processing of numerical information. Journal of Experimental Psychology: Learning, Memory, and Cognition, 18(1), 166–179. DOI: https://doi. org/10.1037/0278-7393.18.1.166
 <br />
-Walsh, V. (2003). A theory of magnitude: common cortical metrics of time, space and quantity. Trends in cognitive sciences, 7(11), 483-488. DOI: https://doi.org/10.1016/j.tics.2003.09.002
+<B>Walsh, V.</B> (2003). A theory of magnitude: common cortical metrics of time, space and quantity. Trends in cognitive sciences, 7(11), 483-488. DOI: https://doi.org/10.1016/j.tics.2003.09.002
 <br />
-Walsh, V. (2015). A theory of magnitude: The parts that sum to number. In: Kadosh, R. C. & Dowker, A. (Eds.), Oxford library of psychology. The Oxford handbook of numerical cognition (p. 552–565). Oxford University Press.
+<B>Walsh, V.</B> (2015). A theory of magnitude: The parts that sum to number. In: Kadosh, R. C. & Dowker, A. (Eds.), Oxford library of psychology. The Oxford handbook of numerical cognition (p. 552–565). Oxford University Press.
 <br />
-Wühr, P., and Seegelke, C. 2018 Compatibility between Physical Stimulus Size and Left-right Responses: Small is Left and Large is Right. Journal of Cognition, 1(1): 17, pp. 1–11, DOI: https://doi.org/10.5334/joc.19
+<B>Wühr, P., and Seegelke, C.</B> (2018). Compatibility between Physical Stimulus Size and Left-right Responses: Small is Left and Large is Right. Journal of Cognition, 1(1): 17, pp. 1–11, DOI: https://doi.org/10.5334/joc.19
 <br />
-Official \_magpie homepage: https://magpie-ea.github.io/magpie-site/
+<B>Official \_magpie homepage:</B> https://magpie-ea.github.io/magpie-site/
 <br />
-Official \_magpie GitHub repository: https://github.com/magpie-ea
+<B>Official \_magpie GitHub repository:</B> https://github.com/magpie-ea
